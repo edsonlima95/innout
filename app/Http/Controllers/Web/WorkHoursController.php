@@ -54,24 +54,34 @@ class WorkHoursController extends Controller
             ->where('work_date', date('Y-m-d'))
             ->first();
 
-        if (!$time->time_1) {
-            $time->time_1 = date('H:i:s');
-            $time->save();
-            notify()->success('Você bateu o primeiro ponto do dia', '1º batimento');
-        } elseif (!$time->time_2) {
-            $time->time_2 = date('H:i:s');
-            $time->save();
-            notify()->success('Você bateu o segundo ponto do dia', '2º batimento');
-        } elseif (!$time->time_3) {
-            $time->time_3 = date('H:i:s');
-            $time->save();
-            notify()->success('Você bateu o terceiro ponto do dia', '3º batimento');
-        } elseif (!$time->time_4) {
-            $time->time_4 = date('H:i:s');
-            $time->save();
-            notify()->success('Você bateu o quarto ponto do dia', '4º batimento');
-        } else {
-            notify()->info('Você já bateu todos os pontos do dia', 'Batimento encerrado');
+        switch ($time) {
+            case !$time->time_1:
+                $time->time_1 = date('H:i:s');
+                $time->worked_time = convertSecondsToDateInterval($time->workedHours());
+                $time->save();
+                notify()->success('Você bateu o primeiro ponto do dia', '1º batimento');
+                break;
+            case !$time->time_2:
+                $time->time_2 = date('H:i:s');
+                $time->worked_time = convertSecondsToDateInterval($time->workedHours());
+                $time->save();
+                notify()->success('Você bateu o segundo ponto do dia', '2º batimento');
+                break;
+            case !$time->time_3:
+                $time->time_3 = date('H:i:s');
+                $time->worked_time = convertSecondsToDateInterval($time->workedHours());
+                $time->save();
+                notify()->success('Você bateu o terceiro ponto do dia', '3º batimento');
+                break;
+            case !$time->time_4:
+                $time->time_4 = date('H:i:s');
+                $time->worked_time = convertSecondsToDateInterval($time->workedHours());
+                $time->save();
+                notify()->success('Você bateu o quarto ponto do dia', '4º batimento');
+                break;
+            default:
+                notify()->info('Você já bateu todos os pontos do dia', 'Batimento encerrado');
+
         }
 
         return redirect()->route('app.home');

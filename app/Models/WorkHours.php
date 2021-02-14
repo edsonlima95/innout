@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class WorkHours extends Model
 {
@@ -94,5 +95,24 @@ class WorkHours extends Model
             $total = sumDateFromInterval($period, $this->lunchHours());
             return $t1->add($total);
         }
+    }
+
+    public function scopeMonthReport($query,$param)
+    {
+        $firstDay = firstDayOfMonth($param)->format('Y-m-d');
+        $lastDay = lastDayOfMonth($param)->format('Y-m-d');
+
+        return $query->where('user_id', Auth::id())
+            ->whereBetween('work_date', [$firstDay, $lastDay])
+            ->get();
+    }
+
+    public function dayBalance()
+    {
+        $balance = $this->worked_time - 28800;
+        $timeTotal = convertTimeToHour(abs($balance));
+        $timeTotal = ($timeTotal === '00:00:00' ? 'positivo' : $timeTotal);
+        $positiveNegative = $this->worked_time >= 28800 ? '+' : '-';
+        return "{$positiveNegative}{$timeTotal}";
     }
 }

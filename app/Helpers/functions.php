@@ -28,6 +28,14 @@ if (!function_exists('isBefore')) {
     }
 }
 
+if (!function_exists('isPastWorkDay')) {
+
+    function isPastWorkDay($param)
+    {
+        return !isWeekend($param) && isBefore($param, new \DateTime());
+    }
+}
+
 if (!function_exists('nextDay')) {
 
     function nextDay($param)
@@ -64,6 +72,16 @@ if (!function_exists('subDateFromInterval')) {
     }
 }
 
+if (!function_exists('convertSecondsToDateInterval')) {
+
+    function convertSecondsToDateInterval($param)
+    {
+        $date = new DateTimeImmutable();
+        $date_1 = $date->add($param);
+        return $date_1->getTimestamp() - $date->getTimestamp();
+    }
+}
+
 if (!function_exists('convertIntervalToDate')) {
 
     function convertIntervalToDate($param)
@@ -76,6 +94,39 @@ if (!function_exists('convertStringToDate')) {
 
     function convertStringToDate($param)
     {
-        return  DateTime::createFromFormat('H:i:s',$param);
+        return DateTime::createFromFormat('H:i:s', $param);
     }
 }
+
+if (!function_exists('firstDayOfMonth')) {
+
+    function firstDayOfMonth($param)
+    {
+        $date = convertStringToDate($param)->getTimestamp();
+        return (new DateTime(date('Y-m-1', $date)));
+    }
+}
+
+if (!function_exists('lastDayOfMonth')) {
+
+    function lastDayOfMonth($param)
+    {
+        $date = convertStringToDate($param)->getTimestamp();
+        return (new DateTime(date('Y-m-t', $date)));
+    }
+}
+
+if (!function_exists('convertTimeToHour')) {
+
+    function convertTimeToHour($param)
+    {
+        $h = intdiv($param, 3600);
+        $m = intdiv($param % 3600, 60);
+        $s = $param - ($h * 3600) - ($m * 60);
+        return sprintf("%02d:%02d:%02d", $h, $m, $s);
+    }
+}
+
+
+
+

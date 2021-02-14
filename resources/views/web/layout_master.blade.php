@@ -70,7 +70,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('app.month-report')}}" class="nav-link">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>
                                 Relatório Mensal
@@ -198,6 +198,11 @@
 <script src="{{ asset('frontend/assets/js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{ asset('frontend/assets/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/responsive.bootstrap4.min.js') }}"></script>
+<script>
+    $(function () {
+        $("#data-table").dataTable();
+    })
+</script>
 @notifyJs
 @hasSection('js')
     @yield('js')

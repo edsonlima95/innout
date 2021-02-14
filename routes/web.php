@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\WorkHoursController;
 use App\Http\Controllers\Web\USerController;
+use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\TestController;
 
 Route::get('/test', [TestController::class, 'test']);
@@ -33,6 +34,8 @@ Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
          * Rotas relacionadas ao usaurio
          */
         Route::resource('/users', UserController::class);
+
+        Route::get('/month-report',[ReportController::class, 'monthReport'])->name('month-report');
 
     });
 
