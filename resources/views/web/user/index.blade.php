@@ -1,130 +1,99 @@
 @extends('web.layout_master')
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">DataTable with default features</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="data-table" class="table table-bordered table-striped dataTable dtr-inline"
-                                       role="grid" aria-describedby="example1_info">
-                                    <thead>
-                                    <tr role="row">
-                                        <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1" aria-sort="ascending"
-                                            aria-label="Rendering engine: activate to sort column descending">Rendering
-                                            engine
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1" aria-label="Browser: activate to sort column ascending">Browser
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1" aria-label="Platform(s): activate to sort column ascending">
-                                            Platform(s)
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1" aria-label="Engine version: activate to sort column ascending">
-                                            Engine version
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                            colspan="1" aria-label="CSS grade: activate to sort column ascending">CSS
-                                            grade
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+@section('breadcrumb')
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1 class="m-0 text-dark"><i class="fa fa-list-alt"></i> Lista de usuários</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <a href="{{route('app.home')}}" class="btn btn-dark"><i class="fa fa-home mr-2"></i>Voltar</a>
+            </ol>
+        </div><!-- /.col -->
+    </div>
+@endsection
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa fa-users"></i> Listagem</h3>
+                <a href="{{route('app.users.create')}}" class="btn btn-success float-right"><i
+                        class="fa fa-plus-circle mr-2"></i>Cadastrar</a>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="data-table" class="table table-bordered table-striped dataTable dtr-inline"
+                                   role="grid" aria-describedby="example1_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-sort="ascending"
+                                        aria-label="Rendering engine: activate to sort column descending">#Codigo
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Browser: activate to sort column ascending">Nome
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Platform(s): activate to sort column ascending">
+                                        E-mail
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">
+                                        Acesso
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                        colspan="1" aria-label="Engine version: activate to sort column ascending">
+                                        Ações
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if(\Illuminate\Support\Facades\Auth::user()->is_admin)
+                                    @foreach($users as $user)
+                                        <tr role="row" class="odd">
+                                            <td tabindex="0" class="sorting_1">{{$user->id}}</td>
+                                            <td>{{$user->name ?? ''}}</td>
+                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->is_admin ? 'Admin' : 'Usúario'}}</td>
+                                            <td class="text-center">
+                                                @if($user->id !== \Illuminate\Support\Facades\Auth::id())
+                                                    <form action="{{route('app.users.destroy',['user'=>$user->id])}}" class="d-block" method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                                        <a class="btn btn-primary" href="{{route('app.users.edit',['user'=>$user->id])}}"><i class="fa fa-edit"></i></a>
+                                                    </form>
+                                                @else
+                                                    <a class="btn btn-primary" href="{{route('app.users.edit',['user'=>$user->id])}}"><i class="fa fa-edit"></i></a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr role="row" class="odd">
-                                        <td tabindex="0" class="sorting_1">Gecko</td>
-                                        <td>Firefox 1.0</td>
-                                        <td>Win 98+ / OSX.2+</td>
-                                        <td>1.7</td>
-                                        <td>A</td>
+                                        <td tabindex="0" class="sorting_1">{{$users->id}}</td>
+                                        <td>{{$users->name}}</td>
+                                        <td>{{$users->email}}</td>
+                                        <td>{{$users->is_admin ? 'Admin' : 'Usúario'}}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-primary"
+                                               href="{{route('app.users.edit',['user'=>$users->id])}}"><i
+                                                    class="fa fa-edit"></i></a>
+                                        </td>
                                     </tr>
-                                    <tr role="row" class="even">
-                                        <td tabindex="0" class="sorting_1">Gecko</td>
-                                        <td>Firefox 1.5</td>
-                                        <td>Win 98+ / OSX.2+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="odd">
-                                        <td tabindex="0" class="sorting_1">Gecko</td>
-                                        <td>Firefox 2.0</td>
-                                        <td>Win 98+ / OSX.2+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="even">
-                                        <td tabindex="0" class="sorting_1">Gecko</td>
-                                        <td>Firefox 3.0</td>
-                                        <td>Win 2k+ / OSX.3+</td>
-                                        <td>1.9</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="odd">
-                                        <td class="sorting_1" tabindex="0">Gecko</td>
-                                        <td>Camino 1.0</td>
-                                        <td>OSX.2+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="even">
-                                        <td class="sorting_1" tabindex="0">Gecko</td>
-                                        <td>Camino 1.5</td>
-                                        <td>OSX.3+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="odd">
-                                        <td class="sorting_1" tabindex="0">Gecko</td>
-                                        <td>Netscape 7.2</td>
-                                        <td>Win 95+ / Mac OS 8.6-9.2</td>
-                                        <td>1.7</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="even">
-                                        <td class="sorting_1" tabindex="0">Gecko</td>
-                                        <td>Netscape Browser 8</td>
-                                        <td>Win 98SE+</td>
-                                        <td>1.7</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="odd">
-                                        <td class="sorting_1" tabindex="0">Gecko</td>
-                                        <td>Netscape Navigator 9</td>
-                                        <td>Win 98+ / OSX.2+</td>
-                                        <td>1.8</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr role="row" class="even">
-                                        <td class="sorting_1" tabindex="0">Gecko</td>
-                                        <td>Mozilla 1.0</td>
-                                        <td>Win 95+ / OSX.1+</td>
-                                        <td>1</td>
-                                        <td>A</td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th rowspan="1" colspan="1">Rendering engine</th>
-                                        <th rowspan="1" colspan="1">Browser</th>
-                                        <th rowspan="1" colspan="1">Platform(s)</th>
-                                        <th rowspan="1" colspan="1">Engine version</th>
-                                        <th rowspan="1" colspan="1">CSS grade</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+                                @endif
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                <!-- /.card-body -->
             </div>
+            <!-- /.card-body -->
         </div>
     </div>
+</div>
 @endsection

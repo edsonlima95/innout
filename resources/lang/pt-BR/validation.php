@@ -256,7 +256,8 @@ return [
         'category_id' => 'categoria',
         'value' => 'valor',
         'due_at' => 'vencimento',
-        'repeat_when' => ''
+        'repeat_when' => '',
+        'end_date' => 'ativo/inativo'
     ],
 
 ];

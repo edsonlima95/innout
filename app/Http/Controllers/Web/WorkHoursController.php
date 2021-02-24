@@ -14,11 +14,11 @@ class WorkHoursController extends Controller
     public function home()
     {
 
-        $workHours = WorkHours::where('work_date', date('Y-m-d'))->first();
+        $workHours = WorkHours::where('work_date', date('Y-m-d'))->where('user_id',Auth::id())->first();
         if (!$workHours) {
             $data = [
                 'work_date' => date('Y-m-d'),
-                'user_id' => 1,
+                'user_id' => Auth::id(),
                 'worked_time' => 0
             ];
             DB::table('work_hours')->insert($data);
@@ -50,10 +50,12 @@ class WorkHoursController extends Controller
 
     public function lunch()
     {
+        //Faz uma busca pelo usuario e a data de hoje.
         $time = WorkHours::where('user_id', Auth::id())
             ->where('work_date', date('Y-m-d'))
             ->first();
 
+        //Verifica se o ponto ainda nao foi batido e bate o ponto e seta o valor das horas
         switch ($time) {
             case !$time->time_1:
                 $time->time_1 = date('H:i:s');

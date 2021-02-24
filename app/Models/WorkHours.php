@@ -26,17 +26,20 @@ class WorkHours extends Model
      */
     public function workedHours()
     {
+        //Converte a string data em um data do tipo DATETIME
         $t1 = convertStringToDate($this->time_1);
         $t2 = convertStringToDate($this->time_2);
         $t3 = convertStringToDate($this->time_3);
         $t4 = convertStringToDate($this->time_4);
 
+        //Zera o intervalo de tempo
         $part1 = new \DateInterval('PT0S');
         $part2 = new \DateInterval('PT0S');
 
-
+        //Verifica a hora do batimento e pega a diferença do hororio atual.
         if ($this->time_1) {
-            $part1 = $t1->diff(new \DateTime());
+           $part1 = $t1->diff(new \DateTime());
+
         }
 
         if ($this->time_2) {
@@ -49,6 +52,7 @@ class WorkHours extends Model
 
         if ($this->time_4) {
             $part2 = $t3->diff($t4);
+
         }
 
         return sumDateFromInterval($part1, $part2);
@@ -97,12 +101,17 @@ class WorkHours extends Model
         }
     }
 
-    public function scopeMonthReport($query,$param)
+    /**
+     * @param $param //recebe uma data inicial
+     * @param $param2 //recebe um usuario
+     * @return mixed
+     */
+    public function scopeMonthReport($query, $param, $param2)
     {
         $firstDay = firstDayOfMonth($param)->format('Y-m-d');
         $lastDay = lastDayOfMonth($param)->format('Y-m-d');
 
-        return $query->where('user_id', Auth::id())
+        return $query->where('user_id', $param2)
             ->whereBetween('work_date', [$firstDay, $lastDay])
             ->get();
     }
@@ -115,4 +124,31 @@ class WorkHours extends Model
         $positiveNegative = $this->worked_time >= 28800 ? '+' : '-';
         return "{$positiveNegative}{$timeTotal}";
     }
+
+    public function scopeUsersAbsent($query)
+    {
+        $allUsers = $query->where('work_date', date('Y-m-d'))
+                    ->where('time_1','!=',null)->get();
+
+        if($allUsers->count() == 0){
+           $usersAbsent = User::all();
+        }
+
+        foreach ($allUsers as $user) {
+            $arrAbsent[] = $user->user_id;
+            $usersAbsent = User::whereNotIn('id', $arrAbsent)->get();
+        }
+
+        return $usersAbsent;
+    }
+
+    public function scopeSumWorkedTime($query)
+    {
+
+        $timeTotal = $query->whereMonth('work_date', date('m'))->sum('worked_time');
+
+       return convertTimeToHour($timeTotal);
+
+    }
+
 }

@@ -1,6 +1,10 @@
 <?php
 
 //FUNÇÕES MANIPULAÇÃO DE DATAS
+
+/**
+ * Recebe uma data e converto para DATETIME
+ */
 if (!function_exists('convertStringToDate')) {
 
     function convertStringToDate($param)
@@ -9,6 +13,9 @@ if (!function_exists('convertStringToDate')) {
     }
 }
 
+/**
+ * Verifica se a data informada e um fim de semana.
+ */
 if (!function_exists('isWeekend')) {
 
     function isWeekend($param)
@@ -18,6 +25,9 @@ if (!function_exists('isWeekend')) {
     }
 }
 
+/**
+ * Verifica se a data informada e anterior a data atual
+ */
 if (!function_exists('isBefore')) {
 
     function isBefore($param1, $param2)
@@ -28,6 +38,9 @@ if (!function_exists('isBefore')) {
     }
 }
 
+/**
+ * Verifica se a data não é um fim de semana e se ela está no passado antes da data atual
+ */
 if (!function_exists('isPastWorkDay')) {
 
     function isPastWorkDay($param)
@@ -36,6 +49,9 @@ if (!function_exists('isPastWorkDay')) {
     }
 }
 
+/**
+ * Retorna um dia a mais da data atual
+ */
 if (!function_exists('nextDay')) {
 
     function nextDay($param)
@@ -46,6 +62,9 @@ if (!function_exists('nextDay')) {
     }
 }
 
+/**
+ * Soma um intervalo de tempo a data atual
+ */
 if (!function_exists('sumDateFromInterval')) {
 
     function sumDateFromInterval($param1, $param2)
@@ -59,6 +78,9 @@ if (!function_exists('sumDateFromInterval')) {
     }
 }
 
+/**
+ * Subtrai um intervalo de tempo da data atual
+ */
 if (!function_exists('subDateFromInterval')) {
 
     function subDateFromInterval($param1, $param2)
@@ -72,6 +94,9 @@ if (!function_exists('subDateFromInterval')) {
     }
 }
 
+/**
+ * recebe os segundos e converte para um intervalo de tempo
+ */
 if (!function_exists('convertSecondsToDateInterval')) {
 
     function convertSecondsToDateInterval($param)
@@ -82,6 +107,9 @@ if (!function_exists('convertSecondsToDateInterval')) {
     }
 }
 
+/**
+ * Converte um intervalo de tempo em uma data.
+ */
 if (!function_exists('convertIntervalToDate')) {
 
     function convertIntervalToDate($param)
@@ -90,6 +118,9 @@ if (!function_exists('convertIntervalToDate')) {
     }
 }
 
+/**
+ * Converte uma string passada como data/tempo em uma data
+ */
 if (!function_exists('convertStringToDate')) {
 
     function convertStringToDate($param)
@@ -98,6 +129,9 @@ if (!function_exists('convertStringToDate')) {
     }
 }
 
+/**
+ * Retorna o primeiro dia do mês
+ */
 if (!function_exists('firstDayOfMonth')) {
 
     function firstDayOfMonth($param)
@@ -107,6 +141,9 @@ if (!function_exists('firstDayOfMonth')) {
     }
 }
 
+/**
+ * Retorna o ultimo dia do mês
+ */
 if (!function_exists('lastDayOfMonth')) {
 
     function lastDayOfMonth($param)
@@ -116,6 +153,9 @@ if (!function_exists('lastDayOfMonth')) {
     }
 }
 
+/**
+ * Recebe as horas em formato de TIME ex: 232123421 e converte para hora normal 00:50:30
+ */
 if (!function_exists('convertTimeToHour')) {
 
     function convertTimeToHour($param)

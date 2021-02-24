@@ -1,4 +1,6 @@
-@php $routeName = \Illuminate\Support\Facades\Route::currentRouteName() @endphp
+@php
+    $routeName = \Illuminate\Support\Facades\Route::currentRouteName()
+@endphp
     <!doctype html>
 <html lang="pt-br">
 <head>
@@ -47,11 +49,19 @@
         <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="{{asset('frontend/assets/img/avatar.png')}}" style="max-width: 50px" class="img-circle elevation-2"
+                    @php
+                       if(Auth::user()->cover):
+                      $cover = Storage::url(Auth::user()->cover);
+                      else:
+                      $cover = asset('frontend/assets/img/avatar.png');
+                  endif
+                    @endphp
+                    <img src="{{$cover}}" style="max-width: 40px; max-height: 40px" class="img-circle elevation-2"
                          alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="{{route('app.home')}}"
+                       class="d-block">{{Str::upper(Auth::user()->name)}}</a>
                 </div>
             </div>
 
@@ -62,7 +72,7 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('app.home')}}" class="nav-link">
                             <i class="nav-icon fas fa-check"></i>
                             <p>
                                 Registrar Ponto
@@ -78,7 +88,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('app.general-report')}}" class="nav-link">
                             <i class="nav-icon fas fa-chart-bar"></i>
                             <p>
                                 Relatório Gerencial
@@ -138,17 +148,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0 text-dark">Dashboard</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div>
+                    @yield('breadcrumb')
                 @endif
             </div><!-- /.container-fluid -->
         </div>
@@ -170,8 +170,11 @@
     <aside class="control-sidebar control-sidebar-dark">
         <!-- Control sidebar content goes here -->
         <div class="p-3">
-            <h5>Title</h5>
-            <p>Sidebar content</p>
+            <h5 class="text-center">Perfil</h5>
+            <p class="mt-2"><strong>Nome:</strong> <small>{{Auth::user()->name}}</small></p>
+            <p class="mt-2"><strong>Email:</strong> <small>{{Auth::user()->email}}</small></p>
+            <p class="mt-2"><strong>Acesso:</strong> <small class="badge {{Auth::user()->is_admin == true ? 'badge-success' : 'badge-danger'}}">Admin</small></p>
+
         </div>
         <div class="p-3 ">
             <a href="{{route('app.logout')}}" class="btn btn-danger col-12"><i class="fa fa-sign-out-alt"></i> SAIR</a>
@@ -200,7 +203,33 @@
 <script src="{{ asset('frontend/assets/js/responsive.bootstrap4.min.js') }}"></script>
 <script>
     $(function () {
-        $("#data-table").dataTable();
+        $("#data-table").dataTable({
+            responsive: true,
+            "pageLength": 25,
+            "language": {
+                "sEmptyTable": "Nenhum registro encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "r",
+                "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sInfoThousands": ".",
+                "sLengthMenu": "_MENU_ resultados por página",
+                "sLoadingRecords": "Carregando...",
+                "sProcessing": "Processando...",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sSearch": "Pesquisar",
+                "oPaginate": {
+                    "sNext": "Próximo",
+                    "sPrevious": "Anterior",
+                    "sFirst": "Primeiro",
+                    "sLast": "Último"
+                },
+                "oAria": {
+                    "sSortAscending": ": Ordenar colunas de forma ascendente",
+                    "sSortDescending": ": Ordenar colunas de forma descendente"
+                }
+            },
+        });
     })
 </script>
 @notifyJs

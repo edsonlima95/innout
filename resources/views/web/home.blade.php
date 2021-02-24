@@ -1,5 +1,6 @@
 @extends('web.layout_master')
 @section('content')
+
     <div class="row mt-5">
         <div class="col-lg-6 d-flex align-items-center flex-column mt-3 mb-5">
             <p class="font-weight-bold text-3xl">1º Entrada: <span

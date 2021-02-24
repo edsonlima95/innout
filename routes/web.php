@@ -3,17 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\WorkHoursController;
-use App\Http\Controllers\Web\USerController;
+use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\TestController;
 
-Route::get('/test', [TestController::class, 'test']);
+
+Route::get('/',[AuthController::class, 'formLogin']);
+
 
 Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
 
     /**
      * Routas do login
      */
+
     Route::get('/login', [AuthController::class, 'formLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('dologin');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -35,9 +38,10 @@ Route::group(['prefix' => 'app', 'as' => 'app.'], function () {
          */
         Route::resource('/users', UserController::class);
 
-        Route::get('/month-report',[ReportController::class, 'monthReport'])->name('month-report');
+
+        Route::match(['post','get'],'/month-report',[ReportController::class, 'monthReport'])->name('month-report');
+        Route::get('/general-report',[ReportController::class, 'generalReport'])->name('general-report')->middleware(['userAccess']);
 
     });
-
 
 });

@@ -17,10 +17,10 @@ class CreateWorkHoursTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->date('work_date');
-            $table->time('time_1');
-            $table->time('time_2');
-            $table->time('time_3');
-            $table->time('time_4');
+            $table->time('time_1')->nullable();
+            $table->time('time_2')->nullable();
+            $table->time('time_3')->nullable();
+            $table->time('time_4')->nullable();
             $table->integer('worked_time');
             $table->timestamps();
 
