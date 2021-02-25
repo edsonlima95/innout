@@ -2,12 +2,12 @@
 @section('content')
 @section('breadcrumb')
     <div class="row mb-2">
-        <div class="col-sm-6">
+        <div class="col-sm-6 mb-3">
             <h1 class="m-0 text-dark"><i class="fa fa-list-alt"></i> Lista de usuários</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-                <a href="{{route('app.home')}}" class="btn btn-dark"><i class="fa fa-home mr-2"></i>Voltar</a>
+                <a href="{{route('app.home')}}" class="btn btn-dark col-sm-12"><i class="fa fa-home mr-2"></i>Voltar</a>
             </ol>
         </div><!-- /.col -->
     </div>

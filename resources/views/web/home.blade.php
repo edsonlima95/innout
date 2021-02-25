@@ -15,7 +15,7 @@
                     class="text-danger">{{$workingHours->time_4 ?? '---'}}</span></p>
         </div>
         <div class="col-lg-12 d-flex justify-content-center mt-4">
-            <a href="{{route('app.lunch')}}" class="btn btn-dark btn-lg col-3 mb-5"><i
+            <a href="{{route('app.lunch')}}" class="btn btn-dark btn-lg col-lg-3 mb-5"><i
                     class="fa fa-check mr-2"></i>Bater ponto</a>
         </div>
     </div>
